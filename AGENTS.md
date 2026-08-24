@@ -1,3 +1,26 @@
+# aramino — agent notes
+
+Everything below inside `<laravel-boost-guidelines>` tags is AUTO-MANAGED: `php artisan boost:update` (fires on every `composer update`) rewrites that block. Never hand-edit inside the tags; put project guidance above or below them.
+
+## Stack
+
+Blank Laravel 13 Livewire starter kit, still near-pristine: one route (`GET /` → welcome view), no auth, no API routes, no custom models. Don't hunt for hidden architecture.
+Livewire 4 + `livewire/blaze`, Pest 5, Pint (`laravel` preset), Larastan level 7, Tailwind CSS v4 (via `@tailwindcss/vite`, no `tailwind.config.js`), Vite 8.
+
+## Commands
+
+- `composer test` = full verification chain: `config:clear` → Pint check → `phpstan analyse` → Pest. CI (`.github/workflows/tests.yml`) runs this exact chain via `composer ci:check` — run `composer test` before declaring done.
+- `composer lint` fixes style; `composer setup` bootstraps from scratch; `composer dev` runs app + Vite together (`php artisan dev`).
+- Single test: `php artisan test --compact --filter=testName`.
+- PHPStan covers `app/`, `bootstrap/app.php`, `config/`, `database/`, `routes/` at level 7 — new code there must pass it; code elsewhere isn't analyzed.
+
+## Gotchas
+
+- `tests/Pest.php` has `RefreshDatabase` commented out. Any DB-touching feature test must opt in (`->use(RefreshDatabase::class)` or per-test trait) or queries will leak state.
+- Dev DB is SQLite (`database/database.sqlite`); session, cache, and queue all use the `database` driver — the app needs migrations run before it serves. Tests use `:memory:` SQLite (see `phpunit.xml`), never dev data.
+- This environment is Windows + WSL: `opencode.json` starts the Boost MCP through `wsl.exe /usr/bin/php8.4 artisan boost:mcp`.
+- Agent skills are Boost-installed into `.agents/skills/**`; `boost.json` is the source of truth for which are enabled. Activate the matching skill before working in its domain.
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
