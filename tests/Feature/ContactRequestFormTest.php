@@ -11,7 +11,8 @@ it('renders the landing page', function () {
     $this->get('/')
         ->assertSuccessful()
         ->assertSee('آرامینو')
-        ->assertSee('09382277285');
+        ->assertSee('۰۹۳۸۲۲۷۷۲۸۵')
+        ->assertSee('tel:+989382277285');
 });
 
 it('stores a valid contact request and shows the success message', function () {
@@ -26,6 +27,16 @@ it('stores a valid contact request and shows the success message', function () {
         ->and(ContactRequest::first())
         ->name->toBe('زهرا محمدی')
         ->mobile->toBe('09121234567');
+});
+
+it('normalizes persian digits before storing the mobile number', function () {
+    Livewire::test(ContactRequestForm::class)
+        ->set('name', 'زهرا محمدی')
+        ->set('mobile', '۰۹۱۲۱۲۳۴۵۶۷')
+        ->call('save')
+        ->assertSet('submitted', true);
+
+    expect(ContactRequest::first()->mobile)->toBe('09121234567');
 });
 
 it('rejects an invalid mobile number without storing anything', function (string $mobile) {

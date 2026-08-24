@@ -25,7 +25,7 @@
                 <label for="mobile" class="mb-1.5 block text-sm font-medium text-[#3F4A3C]">شماره موبایل</label>
                 <input id="mobile" type="tel" dir="ltr" inputmode="numeric" wire:model="mobile"
                     class="w-full rounded-xl border border-[#DCE3D5] bg-white px-4 py-3 text-left text-[#333B31] outline-none transition placeholder:text-[#A9B3A3] focus:border-[#8AA07E] focus:ring-2 focus:ring-[#8AA07E]/25"
-                    placeholder="09121234567" autocomplete="tel">
+                    placeholder="۰۹۱۲۱۲۳۴۵۶۷" autocomplete="tel">
                 @error('mobile')
                     <p class="mt-1.5 text-sm text-[#A4553F]">{{ $message }}</p>
                 @enderror
